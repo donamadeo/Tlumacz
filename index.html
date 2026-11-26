@@ -192,7 +192,7 @@ function renderHist(){const h=$("hist");h.innerHTML="";hist.slice().reverse().fo
 function liveMsg(t,cls){const el=$("live");el.textContent=t;el.className="live"+(cls?" "+cls:"")}
 
 /* ---------- speech output ---------- */
-function unlock(){try{speechSynthesis.resume();const u=new SpeechSynthesisUtterance(" ");u.volume=0.01;speechSynthesis.speak(u);unlocked=true}catch(e){}}
+function unlock(){if(unlocked)return;unlocked=true;try{const u=new SpeechSynthesisUtterance("");u.volume=0;speechSynthesis.speak(u)}catch(e){}}
 const vlang=v=>(v.lang||"").replace("_","-");
 function vScore(v,lang){const id=(v.name+" "+v.voiceURI).toLowerCase();let sc=0;
  if(/premium/.test(id))sc+=30;else if(/enhanced|rozszerz|ulepsz|neural|natural/.test(id))sc+=20;else if(/google|online/.test(id))sc+=10;
@@ -223,12 +223,14 @@ function setBtns(){$("m-pl").classList.toggle("on",listening==="pl");$("m-fx").c
 function listen(side){
  if(!SR){liveMsg("Ta przeglądarka nie obsługuje rozpoznawania mowy. Użyj Chrome (Android) lub Safari (iPhone), albo wpisz tekst poniżej.");return}
  if(busy)return;
+ try{if(speechSynthesis.speaking||speechSynthesis.pending)speechSynthesis.cancel()}catch(e){}
  if(rec){const old=rec;old.superseded=true;rec=null;try{old.abort()}catch(e){}}
  const r=new SR();rec=r;
  r.lang=side==="pl"?L.pl.rec:L[fx].rec;r.interimResults=true;r.continuous=false;r.maxAlternatives=1;
  let finalTxt="",heard="",ended=false;
  listening=side;setBtns();
  liveMsg(side==="pl"?"Słucham… mów po polsku":(fx==="en"?"Listening… please speak":"Escuchando… hable, por favor")+(convo?"\n(Chcesz mówić dalej po polsku? Stuknij czerwony przycisk.)":""),side);
+ let gotAudio=false;r.onaudiostart=()=>{gotAudio=true;if(!heard)liveMsg((side==="pl"?"🎙️ Mikrofon włączony – mów po polsku":(fx==="en"?"🎙️ Listening… please speak":"🎙️ Escuchando… hable, por favor")),side)};
  r.onresult=e=>{let interim="";for(let i=e.resultIndex;i<e.results.length;i++){const x=e.results[i];if(x.isFinal)finalTxt+=x[0].transcript+" ";else interim+=x[0].transcript}heard=(finalTxt+interim).trim();if(heard)liveMsg(heard,side)};
  r.onerror=e=>{
   if(r.superseded)return;
@@ -242,6 +244,7 @@ function listen(side){
   if(rec===r)rec=null;listening=null;setBtns();
   const t=heard.trim();
   if(t)translate(side,t);
+  else if(!convo&&!$("live").textContent.startsWith("Brak")&&!$("live").textContent.startsWith("Błąd"))liveMsg(gotAudio?"Nic nie usłyszałem – stuknij i mów od razu, wyraźnie.":"Mikrofon się nie włączył. Zamknij aplikację (przesuń w górę) i otwórz ponownie.");
   else if(convo)setTimeout(()=>{if(convo&&!listening&&!busy)listen(side)},300);
  };
  try{r.start()}catch(e){listening=null;setBtns();liveMsg("Nie udało się włączyć mikrofonu: "+e.message)}
