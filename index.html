@@ -181,7 +181,7 @@ let hist=[];try{hist=JSON.parse(st("t-hist")||"[]")}catch(e){}
 let last=null,rec=null,listening=null,busy=false,convo=false,unlocked=false;
 
 /* ---------- UI basics ---------- */
-function engLabel(){$("eng").textContent=(eng==="claude"&&key?"Silnik: Claude":"Silnik: darmowy")+" · PL ⇄ "+L[fx].code+" · wersja 5"+(navigator.standalone||matchMedia("(display-mode: standalone)").matches?" (ikona)":" (przeglądarka)")}
+function engLabel(){$("eng").textContent=(eng==="claude"&&key?"Silnik: Claude":"Silnik: darmowy")+" · PL ⇄ "+L[fx].code+" · wersja 6"+(navigator.standalone||matchMedia("(display-mode: standalone)").matches?" (ikona)":" (przeglądarka)")}
 function setFx(l){fx=l;st("t-fx",l);document.querySelectorAll(".seg button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.lang===l));$("fx-btn").textContent=L[l].btn;$("ty-lbl").textContent=$("ty-lbl2").textContent=L[l].code;engLabel()}
 document.querySelector(".seg").addEventListener("click",e=>{const b=e.target.closest("button");if(b&&!listening)setFx(b.dataset.lang)});
 function chips(){$("chips").innerHTML=SITS.map(([k,v],i)=>`<button class="chip" data-i="${i}" aria-pressed="${k===sit}">${v}</button>`).join("")}
@@ -195,8 +195,9 @@ function liveMsg(t,cls){const el=$("live");el.textContent=t;el.className="live"+
 function unlock(){if(unlocked)return;unlocked=true;try{const u=new SpeechSynthesisUtterance("");u.volume=0;speechSynthesis.speak(u)}catch(e){}}
 const vlang=v=>(v.lang||"").replace("_","-");
 function vScore(v,lang){const id=(v.name+" "+v.voiceURI).toLowerCase();let sc=0;
+ if(/speech\.synthesis\.voice|eloquence|good ?news|bad ?news|bells|boing|bubbles|cellos|whisper|zarvox|trinoids|organ|superstar|jester|wobble|albert|bahh|hysterical|kathy|fred|junior|ralph|grandma|grandpa|rocko|shelley|sandy|reed|eddy|flo\b/.test(id))sc-=100;
  if(/premium/.test(id))sc+=30;else if(/enhanced|rozszerz|ulepsz|neural|natural/.test(id))sc+=20;else if(/google|online/.test(id))sc+=10;
- if(/compact|eloquence|novelty|bad news|bells|boing|bubbles|cellos|whisper|zarvox|trinoids|organ|superstar|jester|wobble|albert|bahh|fred|junior|ralph/.test(id))sc-=50;
+ if(/com\.apple\.(voice|ttsbundle)/.test(id))sc+=8;
  const i=L[lang].tts.indexOf(vlang(v));sc+=i<0?0:5-i;return sc}
 function voicesFor(lang){try{return speechSynthesis.getVoices().filter(v=>vlang(v).toLowerCase().startsWith(lang)).sort((a,b)=>vScore(b,lang)-vScore(a,lang))}catch(e){return[]}}
 function voiceFor(lang){const vs=voicesFor(lang);const want=st("t-v-"+lang);return (want&&vs.find(v=>v.voiceURI===want))||vs[0]||null}
@@ -220,40 +221,51 @@ function speak(text,lang,force){
 /* ---------- speech input ---------- */
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
 function setBtns(){$("m-pl").classList.toggle("on",listening==="pl");$("m-fx").classList.toggle("on",listening==="fx");$("b-stop").classList.toggle("hide",!(convo||listening))}
+let SRI=null,sess=0,watchdog=null;
 function listen(side){
  if(!SR){liveMsg("Ta przeglądarka nie obsługuje rozpoznawania mowy. Użyj Chrome (Android) lub Safari (iPhone), albo wpisz tekst poniżej.");return}
  if(busy)return;
  try{if(speechSynthesis.speaking||speechSynthesis.pending)speechSynthesis.cancel()}catch(e){}
- if(rec){const old=rec;old.superseded=true;rec=null;try{old.abort()}catch(e){}}
- const r=new SR();rec=r;
+ const my=++sess;
+ if(!SRI)SRI=new SR();
+ const r=SRI;
+ if(listening){try{r.abort()}catch(e){}}
+ rec=r;
  r.lang=side==="pl"?L.pl.rec:L[fx].rec;r.interimResults=true;r.continuous=false;r.maxAlternatives=1;
- let finalTxt="",heard="",ended=false;
+ let finalTxt="",heard="",ended=false,gotAudio=false;
  listening=side;setBtns();
- liveMsg(side==="pl"?"Słucham… mów po polsku":(fx==="en"?"Listening… please speak":"Escuchando… hable, por favor")+(convo?"\n(Chcesz mówić dalej po polsku? Stuknij czerwony przycisk.)":""),side);
- let gotAudio=false;r.onaudiostart=()=>{gotAudio=true;if(!heard)liveMsg((side==="pl"?"🎙️ Mikrofon włączony – mów po polsku":(fx==="en"?"🎙️ Listening… please speak":"🎙️ Escuchando… hable, por favor")),side)};
- r.onresult=e=>{let interim="";for(let i=e.resultIndex;i<e.results.length;i++){const x=e.results[i];if(x.isFinal)finalTxt+=x[0].transcript+" ";else interim+=x[0].transcript}heard=(finalTxt+interim).trim();if(heard)liveMsg(heard,side)};
+ liveMsg((side==="pl"?"Słucham… mów po polsku":(fx==="en"?"Listening… please speak":"Escuchando… hable, por favor"))+(convo&&side==="fx"?"\n(Chcesz mówić dalej po polsku? Stuknij czerwony przycisk.)":""),side);
+ r.onaudiostart=()=>{if(my!==sess)return;gotAudio=true;clearTimeout(watchdog);if(!heard)liveMsg(side==="pl"?"🎙️ Mikrofon włączony – mów po polsku":(fx==="en"?"🎙️ Listening… please speak":"🎙️ Escuchando… hable, por favor"),side)};
+ r.onresult=e=>{if(my!==sess)return;let interim="";for(let i=e.resultIndex;i<e.results.length;i++){const x=e.results[i];if(x.isFinal)finalTxt+=x[0].transcript+" ";else interim+=x[0].transcript}heard=(finalTxt+interim).trim();if(heard)liveMsg(heard,side)};
  r.onerror=e=>{
-  if(r.superseded)return;
-  if(e.error==="not-allowed"||e.error==="service-not-allowed"){convo=false;$("o-convo").checked=false;liveMsg("Brak dostępu do mikrofonu. Zezwól na mikrofon w ustawieniach przeglądarki dla tej strony.")}
+  if(my!==sess)return;
+  if(e.error==="not-allowed"||e.error==="service-not-allowed"){convo=false;$("o-convo").checked=false;liveMsg("Brak dostępu do mikrofonu. Zezwól na mikrofon w ustawieniach dla tej strony.")}
   else if(e.error==="no-speech"){liveMsg("Nic nie usłyszałem.")}
-  else if(e.error!=="aborted")liveMsg("Błąd mikrofonu: "+e.error+(e.message?" – "+e.message:""));
+  else if(e.error!=="aborted"){SRI=null;liveMsg("Błąd mikrofonu: "+e.error+". Stuknij przycisk jeszcze raz.")}
  };
- r.onend=()=>{
-  if(ended)return;ended=true;
-  if(r.superseded)return;
-  if(rec===r)rec=null;listening=null;setBtns();
+ const finish=()=>{
+  if(ended||my!==sess)return;ended=true;clearTimeout(watchdog);
+  rec=null;listening=null;setBtns();
   const t=heard.trim();
   if(t)translate(side,t);
-  else if(!convo&&!$("live").textContent.startsWith("Brak")&&!$("live").textContent.startsWith("Błąd"))liveMsg(gotAudio?"Nic nie usłyszałem – stuknij i mów od razu, wyraźnie.":"Mikrofon się nie włączył. Zamknij aplikację (przesuń w górę) i otwórz ponownie.");
   else if(convo)setTimeout(()=>{if(convo&&!listening&&!busy)listen(side)},300);
+  else if(!/^(Brak|Błąd|Nic)/.test($("live").textContent))liveMsg(gotAudio?"Nic nie usłyszałem – stuknij i mów od razu, wyraźnie.":"Mikrofon się nie włączył – stuknij przycisk jeszcze raz.");
  };
- try{r.start()}catch(e){listening=null;setBtns();liveMsg("Nie udało się włączyć mikrofonu: "+e.message)}
+ r.onend=finish;
+ // if the mic never starts (iPhone sometimes), drop this recognizer so the next tap gets a fresh one
+ clearTimeout(watchdog);watchdog=setTimeout(()=>{if(my===sess&&!gotAudio&&listening){SRI=null;try{r.abort()}catch(e){}finish()}},4000);
+ try{r.start()}catch(e){
+  // already running: stop it and try a fresh recognizer once
+  try{r.abort()}catch(_){}SRI=new SR();
+  try{const r2=SRI;r2.lang=r.lang;r2.interimResults=true;r2.continuous=false;r2.onaudiostart=r.onaudiostart;r2.onresult=r.onresult;r2.onerror=r.onerror;r2.onend=finish;rec=r2;r2.start()}
+  catch(e2){listening=null;setBtns();liveMsg("Nie udało się włączyć mikrofonu: "+e2.message)}
+ }
 }
 function tap(side){unlock();if(listening===side&&rec){rec.stop();return}listen(side)}
 $("m-pl").addEventListener("click",()=>tap("pl"));
 $("m-fx").addEventListener("click",()=>tap("fx"));
 $("o-convo").addEventListener("change",e=>{convo=e.target.checked;setBtns()});
-$("b-stop").addEventListener("click",()=>{convo=false;$("o-convo").checked=false;if(rec){rec.superseded=true;try{rec.abort()}catch(e){}rec=null}listening=null;try{speechSynthesis.cancel()}catch(e){}setBtns();liveMsg("Zatrzymano.")});
+$("b-stop").addEventListener("click",()=>{convo=false;$("o-convo").checked=false;sess++;if(rec){try{rec.abort()}catch(e){}rec=null}listening=null;try{speechSynthesis.cancel()}catch(e){}setBtns();liveMsg("Zatrzymano.")});
 
 /* ---------- translation ---------- */
 function prompt(side,src){
