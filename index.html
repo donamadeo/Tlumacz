@@ -181,7 +181,7 @@ let hist=[];try{hist=JSON.parse(st("t-hist")||"[]")}catch(e){}
 let last=null,rec=null,listening=null,busy=false,convo=false,unlocked=false;
 
 /* ---------- UI basics ---------- */
-function engLabel(){$("eng").textContent=(eng==="claude"&&key?"Silnik: Claude":"Silnik: darmowy")+" · PL ⇄ "+L[fx].code}
+function engLabel(){$("eng").textContent=(eng==="claude"&&key?"Silnik: Claude":"Silnik: darmowy")+" · PL ⇄ "+L[fx].code+" · wersja 5"+(navigator.standalone||matchMedia("(display-mode: standalone)").matches?" (ikona)":" (przeglądarka)")}
 function setFx(l){fx=l;st("t-fx",l);document.querySelectorAll(".seg button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.lang===l));$("fx-btn").textContent=L[l].btn;$("ty-lbl").textContent=$("ty-lbl2").textContent=L[l].code;engLabel()}
 document.querySelector(".seg").addEventListener("click",e=>{const b=e.target.closest("button");if(b&&!listening)setFx(b.dataset.lang)});
 function chips(){$("chips").innerHTML=SITS.map(([k,v],i)=>`<button class="chip" data-i="${i}" aria-pressed="${k===sit}">${v}</button>`).join("")}
@@ -236,7 +236,7 @@ function listen(side){
   if(r.superseded)return;
   if(e.error==="not-allowed"||e.error==="service-not-allowed"){convo=false;$("o-convo").checked=false;liveMsg("Brak dostępu do mikrofonu. Zezwól na mikrofon w ustawieniach przeglądarki dla tej strony.")}
   else if(e.error==="no-speech"){liveMsg("Nic nie usłyszałem.")}
-  else if(e.error!=="aborted")liveMsg("Błąd mikrofonu: "+e.error);
+  else if(e.error!=="aborted")liveMsg("Błąd mikrofonu: "+e.error+(e.message?" – "+e.message:""));
  };
  r.onend=()=>{
   if(ended)return;ended=true;
