@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#c8102e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Tłumacz">
+<link rel="apple-touch-icon" href="data:image/png;base64,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">
+<link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAIAAADdvvtQAAAL9UlEQVR4Xu3deXAT1x3A8afDknzIluvbDgZsgQmHocSFJMDAlBxAAm2Tpm4wkDahFChT0g4DTRsIaUlJOsm00IPO0GkDhBlIBwZaSJpwlHInMRgbanMYWxhjg40tW5dlnR1XGWNL8mp3tW/37b7f9197Vxq9j9+uvKsn1XlTKYIgvqn5bghBfQEgiH/lM7cAIIhn5TO3wAwE8SykBwBBfOrXA4Agzg3UA4AgboXpAUAQhyL1ACCIbVH1ACCIVUPpAUBQ7Bj0ACAoRsx6ABDEVEw9AAgaMjZ6ABAUPZZ6ABAUJfZ6ABAUHic9AAgaFFc9AAh6EA89AAj6Mn56ABDUF289AAiKSw8Aor145p5QcFM9vcWvBwDRmyB6ABClCaUHANGYgHoAEHUJqwcA0ZXgegAQReHQA4BoCZMeAERF+PQghLTCvoQpZaXjjuzitM9Ar8ffbffbHN4Oq7O6zln1X/v5ql5LM8udMD9i6x92Nq1/j+WuFBlWPcID4pFar1NnZyRkZxjMw41TJ4X2YDtd2bZjX+eBT4I+P499QqFw6yH3EJY6vcy8ffO4Ix8kPmwGDfwSQQ+5gEIlTxo74cSejOfn8nsFaU4cPaQDQgipdAnFf34rfe4smjVwTTQ9MgDUZ0irMf/lbV1eNtfXkc7E1CMPQH3PMilx2IYf0wmCUyLrEftdWOSbarVBr8vPSZ1elvPDhUljRzG8WJnlz97+1e89Lfc4vaBUJb4e6WeggLvX3dDUtnP/lVnfbf/gANN4q1Smp2ZQBYJTkuiRHlB/Qa+v8dU3XVeuMbxqptnTGH5Kc1LpIQgQQijoD9zbvofBgX5EAc1KhkpCPWQBQgg5Ki8zEEnIygBAYUmrhzhAvm47AxFNmpHhpxQmuR7iAGlNqQwOfF02CpWQeeTqj6yP9aRMYfruKV97JwAKRcLcE4ogQCqtJvcHLzIQ6b11BwARpYcgQKoEbdHWjczX3ruOnQFA5Mw9oQS+oYxrar1eV9D3n+jcFYsSxxQzbR4Mdn16iuv+FRZpesQGlLdqSd6qJfwG9f7eQ5RfxyBQD0GHMOYCPe7bv9zKT54yIlOPPAAF/YH6Za95WtuUQYFHxOqRAaCg19ew8nXroeM8XndlRLIesc+BuOa6fO3mj9a7LjNdYVV2hOshF5D93MW2Hfs69n1M86cyyNdDBKCgx+uzOfw2u/d+p6vmqrOq1n7uorvxtrKnlpjJQo/YgOBjfiyTix4ZnERTmIz0ACDikpceAERWstMDgAhKjnoAECnJVI/Y78LEj8fl2+5jZ69+e4WYT1W+emAGkj5Z6wFAEid3PQBIyhSgBwBJljL0ACBpUoweACRBStLTt3rTeRPTR7EgYVOYHpiBRE15egCQeClSDwASKaXqAUBipGA9AAh7ytYDgPCmeD0ACGM06AFAuKJEDwDCEj16AJDwUaUHAAkcbXoAkJBRqAcACRadegCQMFGrBwAJEM16AFC8Ua4HAMUV6AFA/AM9oQhaqV5GgZ7+ABDnQM/AABC3QE9YAIhDoCcyAMQ20BM1AMQq0DNUACh2oIchABQj0MMcAGIK9MQMAA0Z6GETAIoe6GEZAIoS6GEfAAoP9HAKAA0K9HANAD0I9PBI4q/9JqeoeuY9nvWnteP4PUmPNzD6hZNh2zLscNW7tYdOD/m9sFE3rLM45r5aye/pCRXMQH2RMPesqRip1aiEGlfRAkBE6EEIjchLLH8yT7SBFyraAZEw9/S3unxEol4j1NCKE9WAiNKDEMpO131/foE4Ay9U9J5Ex6Nn3k8qaxsdQo3BwJZ/q3D3v1q6HT4cO8cRpTNQPHqwlpqsXfn8cKwPIWw0AiJWT6iXninIzdALO8z4og4Q4XoQQgadenX5CHxDLmx0ASJTj6W1J+yk5ztP5BYVJAk70piiCBCZehBCdpdv276mgQOsUavWVIzENOTCRgsgYvWEev9w892O3oFDO/exrFKzUdjBxhEVb+MF1/PRb8tiDsaCNRdq6u0xfy2U2xPYsteyeWVJ/++rVGjdkqKKDdUs9yBVyp+BBNeDqQ+P3m244xq482ml6dMnpmN6OKFSOCC56EEI+QPBd3c3ho3r2sVFKrIvsCoZkIz0hProbHvYUa/UbJz3eJZQswWOFAtIdnpCvbOzIWyYCb/NQ5kn0bj14LsWdqbGerraOvDUZ2R+0guzc4m9OqbAGQi3Hty9s7MhGBz0IKvLRxh0hI4UoU+Ld3LXgxC6fNN++Oyge1tzM/QvPUPobR6KAqQAPaHe293o8w+ahSaOSuX9R4U15QBSjB6EUGNLz4dHW7EOvFApBJCS9IT63R6L2xMQapjxpQRAytODEGqzev72z2Z8Ay9Usn8bL4keNtfCEEI/++O1PUf4H4m27W9a+HR+WgrRYyTvGUgSPaJlc4bf5kFgMgakbD2hIm/zIC25AqJBT/9tHqShGZgsAVGiJ1TkbR5EpTpvKiXqCcWMKj3kJ7MZCPSQlpwAgR4Ckw0g0ENm8gAEeohNBoBAD8mRDgj0EB7RgEAP+ZELCPTIIkIBgR65RCIg0COjiAMEeuQVWTcr0aanpDD56UczJxQbRxUmp6VojUnaYDDo9gQcLn+btbet09PQ0lPf7Lze5KxtdHp9JN7hShAgAvUIvlJ9f6Vm4xtLzY+MSYuYb1QJWrUxSZuXOWiVO483UHXdVv6LS6TNT6QAIlAPvl5Z8NDPv1esUXNYNkGXoP7qaBI/2UMEIKr0lD+Rt/5lMz6dIif9STRVejJNug2vKEcPQlLPQFTp6VvCd15BcmL4lxk43f73DzUfr+xsbHHZnD6tRpWarM3N0JcMT55QbJw+MZ3kBTelPITJVw/v1Tlmfy0j7BDjDwRffP3SwGWBfP6g2+Nps3pq6u1/P3YXIZSfZfjGjOx500hcKEgyQPLVwzu1SlUyPDls84vXbDGXUmxpd2/b37Rt/6CVXAlJmnMgCvUghExGbeQ7L07vxQhMAkB06kEIqaItd1hqNpY9HPnfINkkNiBq9SCEuh1ef2Dw0lEIaTWq3W9O3LR89KPjTboEsYcj/kQ9B6JZD0J9Z8dXbtojV/rR69SL5uQvmpPv9QVqGx3VN+zVN+yVdd237vbEP8C4Ew8Q5XpCHTzZxrBUVIJWPXFUav8vtHb0nrjQeeA/9z6v7Qpb9I6cRPpgoUz1xHMtLOpK9Yl6zSdbywpzEjkJqG10bN7RcOpSJ6etxEmMg65M9eCop9e/7NdXOro9nHY+dmTKro2l65YUcdpKnLADAj1hXb3lnL/m4qlLVq4DvOK5wmXfHMZ1K9zhBQR6otbS7l68sbpiQ/XH59o53eXz04UjM9J0uE1wCuNJNOhh7kyN9UyNNdmgmTre9NgE05SxaeOKjFoN0z0eBp36uVk52w/e5jTGWMMFSNl6eF8Li8zp9h+v7Dhe2YFQ3yn2I2NSp09Kf3Za9kPZhqgDP2VcGlGAsBzClK0HXz29/tPV1rd3NMxc/tkb229EfaD8zOiwpEp4QKAn/vyB4I7Ddw6evBe5qyRD+N0g0iYwINAjYF/Udkfuzeb0CvgQ8SckINATs+2vjZ8/I5vlFXiTMSFyh+1dZAES7CQa9LBpbFHKk1Mz11T07DnS+o+TbXfa3UNtlZWuq5iTH/nTC1ejTEsSJgwg0MOp4bmJ6xYXrV1UVHXd9nltV9U1W32zy2rzdjt8ep26MMcwc/JXli4YlpUe5V8+Jy6QdUFDAEAU6hFkpXqVCk0uSZ1cwuHDOke/6KizODhhxV2850AU6pGqTpt301/rpXr0oYprBgI9otVu9by86bKllbg7hPgDAj08WvrWlaemZn69LGOCOUXN7gu9e3r9+/597ze7GmxOH49HxB1PQKCHX3UWR53FsWWvJTlR8/97x4zFBUnDcgz5mYaUJE2SXqPVqlxuv8Plv9PurrM4Ll61ffrZfafbz+/hRIjPDWWgB+qP80k06IEGxg0Q6IHC4gAI9ECRsQUEeqCosQIEeqChig0I9EAMxQAEeiDmmACBHihmQwICPRCbogMCPRDLogACPRD7wgGBHohTgwCBHohrDwCBHohHXwICPRC//gfr96msIlSbfQAAAABJRU5ErkJggg==">
+<title>Tłumacz</title>
+<style>
+:root{color-scheme:light dark;
+ --bg:light-dark(#fbf7f2,#141418);--card:light-dark(#fff,#1f1f26);--ink:light-dark(#1b1b1f,#f2efe9);
+ --mute:light-dark(#6b6760,#a7a29a);--line:light-dark(#e7e0d6,#2f2f38);
+ --pl:#c8102e;--plbg:light-dark(#fdecee,#3a1820);--en:#1f4fbf;--enbg:light-dark(#e9effc,#17223d)}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow-x:clip;-webkit-tap-highlight-color:transparent}
+main{max-width:720px;margin:0 auto;padding:calc(12px + env(safe-area-inset-top)) max(4vw,14px) calc(40px + env(safe-area-inset-bottom))}
+header{display:flex;align-items:center;justify-content:space-between;gap:10px}
+h1{font-size:26px;line-height:1.1;margin:4px 0}
+h2{font-size:19px;margin:26px 0 8px}
+.sub{color:var(--mute);font-size:14px;margin:2px 0 12px}
+button{font:inherit;cursor:pointer}
+.icon{min-width:44px;min-height:44px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:22px}
+.seg{display:flex;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card);margin-bottom:12px}
+.seg button{flex:1;border:0;background:none;color:var(--ink);font-weight:700;min-height:44px}
+.seg button[aria-pressed=true]{background:var(--en);color:#fff}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:12px}
+.chip{flex:none;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:8px 14px;font-weight:600;font-size:15px;min-height:42px}
+.chip[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.talk{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.big{min-height:120px;border:0;border-radius:20px;color:#fff;font-weight:800;font-size:19px;line-height:1.2;padding:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.big span{font-size:34px}
+.big.pl{background:var(--pl)}.big.fx{background:var(--en)}
+.big.on{outline:5px solid color-mix(in srgb,currentColor 0%,var(--ink));animation:pulse 1.2s ease-in-out infinite}
+@keyframes pulse{50%{transform:scale(.97)}}
+@media(prefers-reduced-motion:reduce){.big.on{animation:none}}
+.live{min-height:52px;margin:12px 0 0;padding:10px 12px;border-radius:14px;background:var(--card);border:1px dashed var(--line);color:var(--mute);white-space:pre-wrap}
+.live.pl{border-color:var(--pl);color:var(--ink)}.live.fx{border-color:var(--en);color:var(--ink)}
+.convo{display:flex;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap}
+.convo label{display:flex;align-items:center;gap:8px;min-height:44px;font-weight:600}
+.convo input{width:24px;height:24px}
+.stop{min-height:44px;padding:0 16px;border-radius:12px;border:0;background:var(--ink);color:var(--bg);font-weight:700}
+.result{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin:14px 0}
+.result .from{color:var(--mute);font-size:15px;margin:0 0 6px}
+.result .to{font-weight:700;font-size:25px;line-height:1.25;margin:0;white-space:pre-wrap}
+.result.empty .to{color:var(--mute);font-weight:400;font-size:16px}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.tbtn{min-height:44px;padding:0 14px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font-weight:600;font-size:15px}
+.tag{font-size:13px;color:var(--mute);margin-top:8px}
+details{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin-top:10px}
+summary{font-weight:700;min-height:32px;cursor:pointer}
+textarea,input[type=text],input[type=password],input[type=search]{width:100%;border:1px solid var(--line);border-radius:12px;padding:10px 12px;font:16px/1.4 inherit;background:var(--bg);color:var(--ink)}
+textarea{min-height:70px}
+.row{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.row .tbtn{flex:1}
+.hist{list-style:none;padding:0;margin:0 0 10px}
+.hist li{border-left:4px solid var(--line);padding:5px 0 5px 12px;margin-bottom:8px}
+.hist li.pl{border-color:var(--pl)}.hist li.fx{border-color:var(--en)}
+.hist .o{color:var(--mute);font-size:14px}.hist .t{font-weight:600}
+table{width:100%;border-collapse:collapse;font-size:15px;margin-top:8px}
+th{text-align:left;font-size:13px;color:var(--mute);padding:6px;border-bottom:2px solid var(--line)}
+td{padding:7px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+td:first-child{font-weight:600}
+@media(max-width:560px){thead{display:none}tbody tr{display:grid;padding:8px 0;border-bottom:1px solid var(--line)}tbody td{border:0;padding:2px 0 2px 5.5em}tbody td::before{content:attr(data-l);float:left;width:5em;margin-left:-5.5em;color:var(--mute);font-weight:400}}
+#settings{position:fixed;inset:0;background:var(--bg);z-index:8;overflow:auto;padding:calc(16px + env(safe-area-inset-top)) max(4vw,14px) 40px}
+#settings .in{max-width:640px;margin:0 auto}
+.field{margin:14px 0}
+.field>b{display:block;margin-bottom:6px}
+.radio{display:flex;align-items:flex-start;gap:10px;padding:10px;border:1px solid var(--line);border-radius:12px;margin-bottom:8px;background:var(--card)}
+.radio input{width:22px;height:22px;margin-top:2px}
+.radio small{display:block;color:var(--mute)}
+.chk{display:flex;align-items:center;gap:10px;min-height:44px}
+.chk input{width:22px;height:22px}
+.ok{color:#1a7f37}.bad{color:var(--pl)}
+.note{color:var(--mute);font-size:14px}
+.hide{display:none!important}
+#show{position:fixed;inset:0;background:var(--en);color:#fff;display:flex;flex-direction:column;justify-content:center;padding:24px;z-index:9}
+#show.pl{background:var(--pl)}
+#show p{font-weight:800;font-size:clamp(30px,8vw,64px);line-height:1.15;margin:0;overflow-wrap:anywhere}
+#show small{opacity:.85;margin-top:24px;font-size:15px}
+</style>
+</head>
+<body>
+<main>
+<header>
+ <div><h1>Tłumacz</h1><p class="sub" id="eng"></p></div>
+ <button class="icon" id="b-set" aria-label="Ustawienia">⚙︎</button>
+</header>
+
+<div class="seg" role="group" aria-label="Język rozmówcy">
+ <button data-lang="en" aria-pressed="true">🇺🇸 English</button><button data-lang="es" aria-pressed="false">🇪🇸 Español</button>
+</div>
+<div class="chips" id="chips" role="group" aria-label="Sytuacja"></div>
+
+<div class="talk">
+ <button class="big pl" id="m-pl"><span>🎤</span>Mówię po polsku</button>
+ <button class="big fx" id="m-fx"><span>🎤</span><b id="fx-btn">Speak English</b></button>
+</div>
+<div class="live" id="live">Stuknij przycisk i mów. Po pauzie tłumaczenie pojawi się samo.</div>
+<div class="convo">
+ <label><input type="checkbox" id="o-convo"> Tryb rozmowy (słucha na zmianę)</label>
+ <button class="stop hide" id="b-stop">■ Zakończ</button>
+</div>
+
+<section class="result empty" id="res" aria-live="polite">
+ <p class="from" id="r-from"></p>
+ <p class="to" id="r-to">Tu pojawi się tłumaczenie.</p>
+ <div class="tools hide" id="r-tools">
+  <button class="tbtn" id="b-show">⛶ Pokaż rozmówcy</button>
+  <button class="tbtn" id="b-say">🔊 Powtórz</button>
+ </div>
+ <div class="tag" id="r-tag"></div>
+</section>
+
+<details>
+ <summary>⌨️ Wpisz zamiast mówić</summary>
+ <textarea id="typed" placeholder="Wpisz tekst po polsku albo w języku rozmówcy…"></textarea>
+ <div class="row">
+  <button class="tbtn" id="ty-pl">🇵🇱 → <span id="ty-lbl">EN</span></button>
+  <button class="tbtn" id="ty-fx"><span id="ty-lbl2">EN</span> → 🇵🇱</button>
+ </div>
+</details>
+
+<h2>Rozmowa</h2>
+<ul class="hist" id="hist"></ul>
+<button class="tbtn" id="b-reset">Nowa rozmowa</button>
+
+<h2>Słowniczek (jw.org)</h2>
+<input type="search" id="q" placeholder="Szukaj: pionier, zbór, asamblea…" aria-label="Szukaj w słowniczku">
+<table><thead><tr><th>Polski</th><th>English</th><th>Español</th></tr></thead><tbody id="gl"></tbody></table>
+</main>
+
+<div id="settings" class="hide" role="dialog" aria-label="Ustawienia"><div class="in">
+ <header><h1>Ustawienia</h1><button class="icon" id="b-close" aria-label="Zamknij">✕</button></header>
+ <div class="field"><b>Silnik tłumaczenia</b>
+  <label class="radio"><input type="radio" name="eng" value="free"><span>Darmowy<small>Bez klucza i bez kosztów. Terminy z jw.org poprawiane słowniczkiem (w przybliżeniu).</small></span></label>
+  <label class="radio"><input type="radio" name="eng" value="claude"><span>Claude (najlepsza jakość)<small>Wymaga klucza API z console.anthropic.com. Koszt: ułamek grosza za zdanie. Gdy zabraknie internetu lub kredytów, użyje silnika darmowego.</small></span></label>
+ </div>
+ <div class="field"><b>Klucz API Claude</b>
+  <input type="password" id="key" placeholder="sk-ant-…" autocomplete="off" autocapitalize="off" spellcheck="false">
+  <div class="row"><button class="tbtn" id="b-test">Sprawdź klucz</button><button class="tbtn" id="b-delkey">Usuń klucz</button></div>
+  <p class="note" id="keymsg">Klucz zostaje tylko w tym telefonie. Ustaw w konsoli limit wydatków, np. 10 $.</p>
+ </div>
+ <div class="field"><b>Model Claude</b><input type="text" id="model" autocapitalize="off" spellcheck="false"></div>
+ <div class="field"><b>Czytanie na głos</b>
+  <label class="chk"><input type="checkbox" id="o-fx" checked> Czytaj angielski / hiszpański</label>
+  <label class="chk"><input type="checkbox" id="o-pl" checked> Czytaj polski</label>
+  <label class="chk">Tempo mowy <input type="range" id="rate" min="0.7" max="1.2" step="0.05" style="width:160px;height:auto"></label>
+ </div>
+ <p class="note">Wskazówka: gdy masz połączone słuchawki Bluetooth, telefon odtwarza cały dźwięk w słuchawkach. Rozmówcy pokaż wtedy tłumaczenie przyciskiem „Pokaż rozmówcy” albo zdejmij słuchawki.</p>
+</div></div>
+
+<div id="show" class="hide" role="dialog"><p id="show-t"></p><small>Stuknij, aby zamknąć</small></div>
+
+<script>
+{
+const $=id=>document.getElementById(id);
+const st=(k,v)=>{try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}};
+const GL=[["Jehowa","Jehovah","Jehová"],["Świadkowie Jehowy","Jehovah's Witnesses","testigos de Jehová"],["zbór","congregation","congregación"],["Sala Królestwa","Kingdom Hall","Salón del Reino"],["brat / siostra","brother / sister","hermano / hermana"],["starszy (zboru)","elder","anciano"],["sługa pomocniczy","ministerial servant","siervo ministerial"],["nadzorca obwodu","circuit overseer","superintendente de circuito"],["Ciało Kierownicze","Governing Body","Cuerpo Gobernante"],["Betel","Bethel","Betel"],["głosiciel","publisher","publicador"],["nieochrzczony głosiciel","unbaptized publisher","publicador no bautizado"],["pionier stały","regular pioneer","precursor regular"],["pionier pomocniczy","auxiliary pioneer","precursor auxiliar"],["służba, głoszenie","ministry, preaching","ministerio, predicación"],["służba od domu do domu","house-to-house ministry","predicación de casa en casa"],["świadczenie publiczne (wózek)","public witnessing (cart)","predicación pública (carrito)"],["grupa służby","field service group","grupo de predicación"],["studium biblijne","Bible study","curso bíblico"],["zebranie w tygodniu","midweek meeting","reunión de entre semana"],["zebranie w weekend","weekend meeting","reunión del fin de semana"],["wykład publiczny","public talk","discurso público"],["Studium Strażnicy","Watchtower Study","Estudio de La Atalaya"],["Strażnica","The Watchtower","La Atalaya"],["Przebudźcie się!","Awake!","¡Despertad!"],["Przekład Nowego Świata","New World Translation","Traducción del Nuevo Mundo"],["Pamiątka","Memorial","Conmemoración"],["kongres regionalny","regional convention","asamblea regional"],["zgromadzenie obwodowe","circuit assembly","asamblea de circuito"],["wielbienie rodzinne","Family Worship","adoración en familia"],["Królestwo Boże","God's Kingdom","Reino de Dios"],["chrzest","baptism","bautismo"],["publikacje","publications","publicaciones"]];
+// corrections for the free engine (common literal mistranslations)
+const FIX={
+ en:[[/\bHall of the Kingdom\b|\bKingdom Room\b/gi,"Kingdom Hall"],[/\bJehovah'?s witnesses\b/gi,"Jehovah's Witnesses"],[/\bthe Lord\b/g,"Jehovah"],[/\bservant helper\b|\bauxiliary servant\b/gi,"ministerial servant"],[/\bregional congress\b/gi,"regional convention"],[/\bcircuit gathering\b/gi,"circuit assembly"],[/\bWatchtower\b(?! Study)/g,"Watchtower"],[/\bWake up!/g,"Awake!"]],
+ es:[[/\bSala del Reino\b/gi,"Salón del Reino"],[/\bpioneros?\b/gi,m=>/s$/i.test(m)?"precursores":"precursor"],[/\bcongreso regional\b/gi,"asamblea regional"],[/\bTorre de Vigilancia\b/gi,"La Atalaya"],[/\bel Señor\b/g,"Jehová"],[/\bsiervo auxiliar\b/gi,"siervo ministerial"],[/¡?Despierta!/g,"¡Despertad!"]],
+ pl:[[/\bkongregacj\p{L}*/giu,"zbór"],[/\bzgromadzeni[eau] (?=w Sali)/gi,"zbór "],[/\bSal[ia] Królestwa\b/g,"Sala Królestwa"],[/\bwydawc(a|y|ów)\b/gi,m=>({wydawca:"głosiciel",wydawcy:"głosiciele",wydawców:"głosicieli"})[m.toLowerCase()]||m],[/\bprekursor\p{L}*/giu,"pionier"],[/\bpionier regularny\b/gi,"pionier stały"],[/\bStrażnicy Wieży\b|\bWieża Strażnicza\b/g,"Strażnica"]]};
+const L={en:{name:"English",btn:"Speak English",rec:"en-US",tts:["en-US","en-GB"],full:"American English",flag:"🇺🇸",code:"EN"},
+ es:{name:"Español",btn:"Hablar español",rec:"es-US",tts:["es-US","es-MX","es-ES"],full:"Latin American Spanish as spoken in the USA",flag:"🇪🇸",code:"ES"},
+ pl:{rec:"pl-PL",tts:["pl-PL"],flag:"🇵🇱"}};
+const SITS=[["general","Ogólna"],["Kingdom Hall, congregation meeting or talking with fellow Witnesses","Zbór"],["preaching ministry, conversation about the Bible","Służba"],["hotel","Hotel"],["car rental","Auto"],["restaurant","Restauracja"],["shop","Sklep"],["airport","Lotnisko"],["pharmacy or doctor","Apteka / lekarz"],["asking for directions","Droga"]];
+const DEF_MODEL="claude-haiku-5-5";
+let fx=st("t-fx")||"en",sit=st("t-sit")||"general",eng=st("t-eng")||"free",key=st("t-key")||"",model=st("t-model")||DEF_MODEL,rate=+(st("t-rate")||1);
+let hist=[];try{hist=JSON.parse(st("t-hist")||"[]")}catch(e){}
+let last=null,rec=null,listening=null,busy=false,convo=false,unlocked=false;
+
+/* ---------- UI basics ---------- */
+function engLabel(){$("eng").textContent=(eng==="claude"&&key?"Silnik: Claude":"Silnik: darmowy")+" · PL ⇄ "+L[fx].code}
+function setFx(l){fx=l;st("t-fx",l);document.querySelectorAll(".seg button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.lang===l));$("fx-btn").textContent=L[l].btn;$("ty-lbl").textContent=$("ty-lbl2").textContent=L[l].code;engLabel()}
+document.querySelector(".seg").addEventListener("click",e=>{const b=e.target.closest("button");if(b&&!listening)setFx(b.dataset.lang)});
+function chips(){$("chips").innerHTML=SITS.map(([k,v],i)=>`<button class="chip" data-i="${i}" aria-pressed="${k===sit}">${v}</button>`).join("")}
+$("chips").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;sit=SITS[+b.dataset.i][0];st("t-sit",sit);chips()});
+function glossary(){const q=$("q").value.trim().toLowerCase(),tb=$("gl");tb.innerHTML="";GL.filter(r=>!q||r.join(" ").toLowerCase().includes(q)).forEach(r=>{const tr=document.createElement("tr");r.forEach((c,i)=>{const td=document.createElement("td");td.textContent=c;td.dataset.l=["Polski","English","Español"][i];tr.append(td)});tb.append(tr)})}
+$("q").addEventListener("input",glossary);
+function renderHist(){const h=$("hist");h.innerHTML="";hist.slice().reverse().forEach(x=>{const li=document.createElement("li");li.className=x.side;const o=document.createElement("div");o.className="o";o.textContent=(x.side==="pl"?"🇵🇱 ":L[x.fx].flag+" ")+x.src;const t=document.createElement("div");t.className="t";t.textContent=x.out;li.append(o,t);h.append(li)});if(!hist.length){const li=document.createElement("li");li.className="note";li.textContent="Jeszcze nic.";h.append(li)}}
+function liveMsg(t,cls){const el=$("live");el.textContent=t;el.className="live"+(cls?" "+cls:"")}
+
+/* ---------- speech output ---------- */
+function unlock(){if(unlocked)return;unlocked=true;try{const u=new SpeechSynthesisUtterance(" ");u.volume=0;speechSynthesis.speak(u)}catch(e){}}
+function voiceFor(lang){try{const vs=speechSynthesis.getVoices(),n=v=>(v.lang||"").replace("_","-");for(const c of L[lang].tts){const v=vs.find(x=>n(x)===c);if(v)return v}return vs.find(x=>n(x).toLowerCase().startsWith(lang))||null}catch(e){return null}}
+function speak(text,lang,force){
+ return new Promise(res=>{
+  const want=force||(lang==="pl"?$("o-pl").checked:$("o-fx").checked);
+  if(!want||!text||!window.speechSynthesis)return res();
+  try{
+   speechSynthesis.cancel();
+   const u=new SpeechSynthesisUtterance(text);u.lang=L[lang].tts[0];const v=voiceFor(lang);if(v)u.voice=v;u.rate=rate;
+   const t=setTimeout(res,text.length*90+3000);
+   u.onend=u.onerror=()=>{clearTimeout(t);res()};
+   speechSynthesis.speak(u);
+  }catch(e){res()}
+ });
+}
+
+/* ---------- speech input ---------- */
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+function setBtns(){$("m-pl").classList.toggle("on",listening==="pl");$("m-fx").classList.toggle("on",listening==="fx");$("b-stop").classList.toggle("hide",!(convo||listening))}
+function listen(side){
+ if(!SR){liveMsg("Ta przeglądarka nie obsługuje rozpoznawania mowy. Użyj Chrome (Android) lub Safari (iPhone), albo wpisz tekst poniżej.");return}
+ if(busy)return;
+ try{speechSynthesis.cancel()}catch(e){}
+ if(rec){try{rec.abort()}catch(e){}}
+ const r=new SR();rec=r;
+ r.lang=side==="pl"?L.pl.rec:L[fx].rec;r.interimResults=true;r.continuous=false;r.maxAlternatives=1;
+ let finalTxt="",heard="",ended=false;
+ listening=side;setBtns();
+ liveMsg(side==="pl"?"Słucham… mów po polsku":(fx==="en"?"Listening… please speak":"Escuchando… hable, por favor"),side);
+ r.onresult=e=>{let interim="";for(let i=e.resultIndex;i<e.results.length;i++){const x=e.results[i];if(x.isFinal)finalTxt+=x[0].transcript+" ";else interim+=x[0].transcript}heard=(finalTxt+interim).trim();if(heard)liveMsg(heard,side)};
+ r.onerror=e=>{
+  if(e.error==="not-allowed"||e.error==="service-not-allowed"){convo=false;$("o-convo").checked=false;liveMsg("Brak dostępu do mikrofonu. Zezwól na mikrofon w ustawieniach przeglądarki dla tej strony.")}
+  else if(e.error==="no-speech"){liveMsg("Nic nie usłyszałem.")}
+  else if(e.error!=="aborted")liveMsg("Błąd mikrofonu: "+e.error);
+ };
+ r.onend=()=>{
+  if(ended)return;ended=true;if(rec===r)rec=null;listening=null;setBtns();
+  const t=heard.trim();
+  if(t)translate(side,t);
+  else if(convo)setTimeout(()=>{if(convo&&!listening&&!busy)listen(side)},300);
+ };
+ try{r.start()}catch(e){listening=null;setBtns();liveMsg("Nie udało się włączyć mikrofonu: "+e.message)}
+}
+function tap(side){unlock();if(listening===side&&rec){rec.stop();return}listen(side)}
+$("m-pl").addEventListener("click",()=>tap("pl"));
+$("m-fx").addEventListener("click",()=>tap("fx"));
+$("o-convo").addEventListener("change",e=>{convo=e.target.checked;setBtns()});
+$("b-stop").addEventListener("click",()=>{convo=false;$("o-convo").checked=false;if(rec)try{rec.abort()}catch(e){}listening=null;try{speechSynthesis.cancel()}catch(e){}setBtns();liveMsg("Zatrzymano.")});
+
+/* ---------- translation ---------- */
+function prompt(side,src){
+ const from=side==="pl"?"Polish":L[fx].full,to=side==="pl"?L[fx].full:"natural everyday spoken Polish",col=fx==="en"?1:2;
+ const terms=GL.map(r=>side==="pl"?`${r[0]} = ${r[col]}`:`${r[col]} = ${r[0]}`).join("; ");
+ const ctx=hist.slice(-6).map(x=>`${x.side==="pl"?"Polish":L[x.fx].name}: ${x.src}`).join("\n")||"(none)";
+ return `You are a live interpreter for a Polish married couple travelling in the USA who are Jehovah's Witnesses, talking face to face with people.
+Translate the text below from ${from} into ${to}.
+Situation: ${sit}.
+Terminology: always use the vocabulary of Jehovah's Witnesses' official publications on jw.org in each language. Use the divine name (Jehowa / Jehovah / Jehová), never replace it with "the Lord". Name Bible books and quote scriptures as in the New World Translation. Glossary: ${terms}.
+Rules: output ONLY the translation, no quotes, no notes. Keep it short and natural, as said aloud. Fix obvious speech-recognition errors from context. Keep numbers, units and prices as said. If the text is already in the target language, translate it into the other language instead.
+Recent conversation for context:
+${ctx}
+
+Text to translate:
+${src}`;
+}
+async function claudeTr(side,src){
+ const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"content-type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
+  body:JSON.stringify({model,max_tokens:600,messages:[{role:"user",content:prompt(side,src)}]})});
+ const j=await r.json().catch(()=>({}));
+ if(!r.ok)throw new Error((j.error&&j.error.message)||("HTTP "+r.status));
+ return (j.content||[]).filter(c=>c.type==="text").map(c=>c.text).join("").trim();
+}
+async function freeTr(side,src){
+ const sl=side==="pl"?"pl":fx,tl=side==="pl"?fx:"pl";let out="";
+ try{
+  const r=await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sl}&tl=${tl}&dt=t&q=${encodeURIComponent(src)}`);
+  if(!r.ok)throw 0;const j=await r.json();out=j[0].map(x=>x[0]).join("");
+ }catch(e){
+  const r=await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(src)}&langpair=${sl}|${tl}`);
+  const j=await r.json();out=(j.responseData&&j.responseData.translatedText)||"";
+ }
+ if(!out)throw new Error("brak odpowiedzi");
+ for(const [re,rep] of FIX[tl])out=out.replace(re,rep);
+ return out.trim();
+}
+async function translate(side,src){
+ if(busy||!src)return;busy=true;
+ const to=side==="pl"?fx:"pl",lf=fx;
+ $("res").classList.remove("empty");$("r-tools").classList.add("hide");$("r-tag").textContent="";
+ $("r-from").textContent=(side==="pl"?"🇵🇱 ":L[fx].flag+" ")+src;$("r-to").textContent="Tłumaczę…";
+ let out="",tag="";
+ try{
+  if(eng==="claude"&&key){
+   try{out=await claudeTr(side,src);tag="Claude"}
+   catch(e){out=await freeTr(side,src);tag="silnik darmowy (Claude: "+e.message+")"}
+  }else{out=await freeTr(side,src);tag="silnik darmowy"}
+ }catch(e){
+  $("r-to").textContent="Nie udało się przetłumaczyć. Sprawdź internet i spróbuj ponownie.";busy=false;
+  if(convo)setTimeout(()=>{if(convo)listen(side)},800);return;
+ }
+ busy=false;
+ $("r-to").textContent=out;$("r-tag").textContent=tag;$("r-tools").classList.remove("hide");
+ last={side,src,out,to};hist.push({side,fx:lf,src,out});st("t-hist",JSON.stringify(hist.slice(-50)));renderHist();
+ liveMsg(side==="pl"?"✓ Przetłumaczono":"✓ Przetłumaczono – odpowiedz po polsku",side);
+ await speak(out,to);
+ if(convo)setTimeout(()=>{if(convo&&!listening&&!busy)listen(side==="pl"?"fx":"pl")},350);
+}
+$("ty-pl").addEventListener("click",()=>{unlock();translate("pl",$("typed").value.trim()).then(()=>{})});
+$("ty-fx").addEventListener("click",()=>{unlock();translate("fx",$("typed").value.trim())});
+
+/* ---------- result tools ---------- */
+$("b-show").addEventListener("click",()=>{if(!last)return;$("show-t").textContent=last.out;$("show").className=last.to==="pl"?"pl":"";try{document.documentElement.requestFullscreen().catch(()=>{})}catch(e){}});
+$("show").addEventListener("click",()=>{$("show").className="hide";try{if(document.fullscreenElement)document.exitFullscreen()}catch(e){}});
+$("b-say").addEventListener("click",()=>{unlock();if(last)speak(last.out,last.to,true)});
+$("b-reset").addEventListener("click",()=>{hist=[];st("t-hist","[]");renderHist();last=null;$("res").classList.add("empty");$("r-from").textContent="";$("r-to").textContent="Tu pojawi się tłumaczenie.";$("r-tools").classList.add("hide");$("r-tag").textContent=""});
+
+/* ---------- settings ---------- */
+function openSet(){document.querySelectorAll("input[name=eng]").forEach(r=>r.checked=r.value===eng);$("key").value=key;$("model").value=model;$("rate").value=rate;$("settings").classList.remove("hide")}
+function saveSet(){const r=document.querySelector("input[name=eng]:checked");eng=r?r.value:"free";key=$("key").value.trim();model=$("model").value.trim()||DEF_MODEL;rate=+$("rate").value||1;st("t-eng",eng);st("t-key",key);st("t-model",model);st("t-rate",rate);st("t-ofx",$("o-fx").checked?"1":"0");st("t-opl",$("o-pl").checked?"1":"0");engLabel()}
+$("b-set").addEventListener("click",openSet);
+$("b-close").addEventListener("click",()=>{saveSet();$("settings").classList.add("hide")});
+$("settings").addEventListener("change",saveSet);
+$("b-delkey").addEventListener("click",()=>{$("key").value="";saveSet();$("keymsg").textContent="Klucz usunięty.";$("keymsg").className="note"});
+$("b-test").addEventListener("click",async()=>{saveSet();const m=$("keymsg");if(!key){m.textContent="Najpierw wklej klucz.";m.className="note bad";return}
+ m.textContent="Sprawdzam…";m.className="note";
+ try{const o=fx;fx="en";const t=await claudeTr("pl","Dzień dobry");fx=o;m.textContent="✓ Działa! Test: „Dzień dobry” → „"+t+"”";m.className="note ok";if(eng!=="claude"){eng="claude";document.querySelector("input[value=claude]").checked=true;saveSet()}}
+ catch(e){m.textContent="✗ "+e.message;m.className="note bad"}});
+if(st("t-ofx")==="0")$("o-fx").checked=false;if(st("t-opl")==="0")$("o-pl").checked=false;
+
+/* ---------- start ---------- */
+setFx(fx);chips();glossary();renderHist();setBtns();
+try{speechSynthesis.getVoices();speechSynthesis.onvoiceschanged=()=>{}}catch(e){}
+if(!SR)liveMsg("Rozpoznawanie mowy niedostępne w tej przeglądarce – otwórz w Chrome (Android) lub Safari (iPhone). Możesz też wpisać tekst poniżej.");
+}
+</script>
+</body>
+</html>
