@@ -148,6 +148,8 @@ td:first-child{font-weight:600}
  <div class="field"><b>Czytanie na głos</b>
   <label class="chk"><input type="checkbox" id="o-fx" checked> Czytaj angielski / hiszpański</label>
   <label class="chk"><input type="checkbox" id="o-pl" checked> Czytaj polski</label>
+  <div class="row"><button class="tbtn" id="b-vtest">🔊 Test głosu</button></div>
+  <p class="note" id="vmsg"></p>
   <label class="chk">Tempo mowy <input type="range" id="rate" min="0.7" max="1.2" step="0.05" style="width:160px;height:auto"></label>
  </div>
  <p class="note">Wskazówka: gdy masz połączone słuchawki Bluetooth, telefon odtwarza cały dźwięk w słuchawkach. Rozmówcy pokaż wtedy tłumaczenie przyciskiem „Pokaż rozmówcy” albo zdejmij słuchawki.</p>
@@ -186,14 +188,14 @@ function renderHist(){const h=$("hist");h.innerHTML="";hist.slice().reverse().fo
 function liveMsg(t,cls){const el=$("live");el.textContent=t;el.className="live"+(cls?" "+cls:"")}
 
 /* ---------- speech output ---------- */
-function unlock(){if(unlocked)return;unlocked=true;try{const u=new SpeechSynthesisUtterance(" ");u.volume=0;speechSynthesis.speak(u)}catch(e){}}
+function unlock(){try{speechSynthesis.resume();const u=new SpeechSynthesisUtterance(" ");u.volume=0.01;speechSynthesis.speak(u);unlocked=true}catch(e){}}
 function voiceFor(lang){try{const vs=speechSynthesis.getVoices(),n=v=>(v.lang||"").replace("_","-");for(const c of L[lang].tts){const v=vs.find(x=>n(x)===c);if(v)return v}return vs.find(x=>n(x).toLowerCase().startsWith(lang))||null}catch(e){return null}}
 function speak(text,lang,force){
  return new Promise(res=>{
   const want=force||(lang==="pl"?$("o-pl").checked:$("o-fx").checked);
   if(!want||!text||!window.speechSynthesis)return res();
   try{
-   speechSynthesis.cancel();
+   speechSynthesis.cancel();try{speechSynthesis.resume()}catch(e){}
    const u=new SpeechSynthesisUtterance(text);u.lang=L[lang].tts[0];const v=voiceFor(lang);if(v)u.voice=v;u.rate=rate;
    const t=setTimeout(res,text.length*90+3000);
    u.onend=u.onerror=()=>{clearTimeout(t);res()};
@@ -208,7 +210,6 @@ function setBtns(){$("m-pl").classList.toggle("on",listening==="pl");$("m-fx").c
 function listen(side){
  if(!SR){liveMsg("Ta przeglądarka nie obsługuje rozpoznawania mowy. Użyj Chrome (Android) lub Safari (iPhone), albo wpisz tekst poniżej.");return}
  if(busy)return;
- try{speechSynthesis.cancel()}catch(e){}
  if(rec){try{rec.abort()}catch(e){}}
  const r=new SR();rec=r;
  r.lang=side==="pl"?L.pl.rec:L[fx].rec;r.interimResults=true;r.continuous=false;r.maxAlternatives=1;
@@ -290,7 +291,7 @@ async function translate(side,src){
  $("r-to").textContent=out;$("r-tag").textContent=tag;$("r-tools").classList.remove("hide");
  last={side,src,out,to};hist.push({side,fx:lf,src,out});st("t-hist",JSON.stringify(hist.slice(-50)));renderHist();
  liveMsg(side==="pl"?"✓ Przetłumaczono":"✓ Przetłumaczono – odpowiedz po polsku",side);
- await speak(out,to);
+ await new Promise(r=>setTimeout(r,350));await speak(out,to);
  if(convo)setTimeout(()=>{if(convo&&!listening&&!busy)listen(side==="pl"?"fx":"pl")},350);
 }
 $("ty-pl").addEventListener("click",()=>{unlock();translate("pl",$("typed").value.trim()).then(()=>{})});
@@ -313,6 +314,9 @@ $("b-test").addEventListener("click",async()=>{saveSet();const m=$("keymsg");if(
  m.textContent="Sprawdzam…";m.className="note";
  try{const o=fx;fx="en";const t=await claudeTr("pl","Dzień dobry");fx=o;m.textContent="✓ Działa! Test: „Dzień dobry” → „"+t+"”";m.className="note ok";if(eng!=="claude"){eng="claude";document.querySelector("input[value=claude]").checked=true;saveSet()}}
  catch(e){m.textContent="✗ "+e.message;m.className="note bad"}});
+$("b-vtest").addEventListener("click",()=>{unlock();let n=0,ve=0,vp=0,vs=0;try{const v=speechSynthesis.getVoices();n=v.length;ve=v.filter(x=>/^en/i.test(x.lang)).length;vp=v.filter(x=>/^pl/i.test(x.lang)).length;vs=v.filter(x=>/^es/i.test(x.lang)).length}catch(e){}
+ $("vmsg").textContent=window.speechSynthesis?`Głosy w telefonie: ${n} (angielskie ${ve}, polskie ${vp}, hiszpańskie ${vs}). Jeśli nic nie słychać: wyłącz tryb wyciszenia i podgłośnij.`:"Ta przeglądarka nie obsługuje czytania na głos.";
+ speak("To jest test głosu.","pl",true).then(()=>speak("This is a voice test.","en",true))});
 if(st("t-ofx")==="0")$("o-fx").checked=false;if(st("t-opl")==="0")$("o-pl").checked=false;
 
 /* ---------- start ---------- */
