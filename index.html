@@ -210,20 +210,23 @@ function setBtns(){$("m-pl").classList.toggle("on",listening==="pl");$("m-fx").c
 function listen(side){
  if(!SR){liveMsg("Ta przeglądarka nie obsługuje rozpoznawania mowy. Użyj Chrome (Android) lub Safari (iPhone), albo wpisz tekst poniżej.");return}
  if(busy)return;
- if(rec){try{rec.abort()}catch(e){}}
+ if(rec){const old=rec;old.superseded=true;rec=null;try{old.abort()}catch(e){}}
  const r=new SR();rec=r;
  r.lang=side==="pl"?L.pl.rec:L[fx].rec;r.interimResults=true;r.continuous=false;r.maxAlternatives=1;
  let finalTxt="",heard="",ended=false;
  listening=side;setBtns();
- liveMsg(side==="pl"?"Słucham… mów po polsku":(fx==="en"?"Listening… please speak":"Escuchando… hable, por favor"),side);
+ liveMsg(side==="pl"?"Słucham… mów po polsku":(fx==="en"?"Listening… please speak":"Escuchando… hable, por favor")+(convo?"\n(Chcesz mówić dalej po polsku? Stuknij czerwony przycisk.)":""),side);
  r.onresult=e=>{let interim="";for(let i=e.resultIndex;i<e.results.length;i++){const x=e.results[i];if(x.isFinal)finalTxt+=x[0].transcript+" ";else interim+=x[0].transcript}heard=(finalTxt+interim).trim();if(heard)liveMsg(heard,side)};
  r.onerror=e=>{
+  if(r.superseded)return;
   if(e.error==="not-allowed"||e.error==="service-not-allowed"){convo=false;$("o-convo").checked=false;liveMsg("Brak dostępu do mikrofonu. Zezwól na mikrofon w ustawieniach przeglądarki dla tej strony.")}
   else if(e.error==="no-speech"){liveMsg("Nic nie usłyszałem.")}
   else if(e.error!=="aborted")liveMsg("Błąd mikrofonu: "+e.error);
  };
  r.onend=()=>{
-  if(ended)return;ended=true;if(rec===r)rec=null;listening=null;setBtns();
+  if(ended)return;ended=true;
+  if(r.superseded)return;
+  if(rec===r)rec=null;listening=null;setBtns();
   const t=heard.trim();
   if(t)translate(side,t);
   else if(convo)setTimeout(()=>{if(convo&&!listening&&!busy)listen(side)},300);
@@ -234,7 +237,7 @@ function tap(side){unlock();if(listening===side&&rec){rec.stop();return}listen(s
 $("m-pl").addEventListener("click",()=>tap("pl"));
 $("m-fx").addEventListener("click",()=>tap("fx"));
 $("o-convo").addEventListener("change",e=>{convo=e.target.checked;setBtns()});
-$("b-stop").addEventListener("click",()=>{convo=false;$("o-convo").checked=false;if(rec)try{rec.abort()}catch(e){}listening=null;try{speechSynthesis.cancel()}catch(e){}setBtns();liveMsg("Zatrzymano.")});
+$("b-stop").addEventListener("click",()=>{convo=false;$("o-convo").checked=false;if(rec){rec.superseded=true;try{rec.abort()}catch(e){}rec=null}listening=null;try{speechSynthesis.cancel()}catch(e){}setBtns();liveMsg("Zatrzymano.")});
 
 /* ---------- translation ---------- */
 function prompt(side,src){
