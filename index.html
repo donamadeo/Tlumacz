@@ -178,10 +178,10 @@ const SITS=[["general","Ogólna"],["Kingdom Hall, congregation meeting or talkin
 const DEF_MODEL="claude-haiku-5-5";
 let fx=st("t-fx")||"en",sit=st("t-sit")||"general",eng=st("t-eng")||"free",key=st("t-key")||"",model=st("t-model")||DEF_MODEL,rate=+(st("t-rate")||1);
 let hist=[];try{hist=JSON.parse(st("t-hist")||"[]")}catch(e){}
-let last=null,rec=null,listening=null,busy=false,convo=false,unlocked=false;
+let lastVoice="",last=null,rec=null,listening=null,busy=false,convo=false,unlocked=false;
 
 /* ---------- UI basics ---------- */
-function engLabel(){$("eng").textContent=(eng==="claude"&&key?"Silnik: Claude":"Silnik: darmowy")+" · PL ⇄ "+L[fx].code+" · wersja 6"+(navigator.standalone||matchMedia("(display-mode: standalone)").matches?" (ikona)":" (przeglądarka)")}
+function engLabel(){$("eng").textContent=(eng==="claude"&&key?"Silnik: Claude":"Silnik: darmowy")+" · PL ⇄ "+L[fx].code+" · wersja 7"+(navigator.standalone||matchMedia("(display-mode: standalone)").matches?" (ikona)":" (przeglądarka)")}
 function setFx(l){fx=l;st("t-fx",l);document.querySelectorAll(".seg button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.lang===l));$("fx-btn").textContent=L[l].btn;$("ty-lbl").textContent=$("ty-lbl2").textContent=L[l].code;engLabel()}
 document.querySelector(".seg").addEventListener("click",e=>{const b=e.target.closest("button");if(b&&!listening)setFx(b.dataset.lang)});
 function chips(){$("chips").innerHTML=SITS.map(([k,v],i)=>`<button class="chip" data-i="${i}" aria-pressed="${k===sit}">${v}</button>`).join("")}
@@ -210,7 +210,7 @@ function speak(text,lang,force){
   if(!want||!text||!window.speechSynthesis)return res();
   try{
    speechSynthesis.cancel();try{speechSynthesis.resume()}catch(e){}
-   const u=new SpeechSynthesisUtterance(text);u.lang=L[lang].tts[0];const v=voiceFor(lang);if(v)u.voice=v;u.rate=rate;
+   const u=new SpeechSynthesisUtterance(text);u.lang=L[lang].tts[0];const v=voiceFor(lang);if(v)u.voice=v;u.rate=rate;lastVoice=v?v.name:"domyślny";
    const t=setTimeout(res,text.length*90+3000);
    u.onend=u.onerror=()=>{clearTimeout(t);res()};
    speechSynthesis.speak(u);
@@ -322,7 +322,7 @@ async function translate(side,src){
  $("r-to").textContent=out;$("r-tag").textContent=tag;$("r-tools").classList.remove("hide");
  last={side,src,out,to};hist.push({side,fx:lf,src,out});st("t-hist",JSON.stringify(hist.slice(-50)));renderHist();
  liveMsg(side==="pl"?"✓ Przetłumaczono":"✓ Przetłumaczono – odpowiedz po polsku",side);
- await new Promise(r=>setTimeout(r,350));await speak(out,to);
+ await new Promise(r=>setTimeout(r,350));await speak(out,to);if(lastVoice)$("r-tag").textContent=tag+" · głos: "+lastVoice;
  if(convo)setTimeout(()=>{if(convo&&!listening&&!busy)listen(side==="pl"?"fx":"pl")},350);
 }
 $("ty-pl").addEventListener("click",()=>{unlock();translate("pl",$("typed").value.trim()).then(()=>{})});
