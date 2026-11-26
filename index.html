@@ -52,7 +52,7 @@ button{font:inherit;cursor:pointer}
 .tag{font-size:13px;color:var(--mute);margin-top:8px}
 details{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin-top:10px}
 summary{font-weight:700;min-height:32px;cursor:pointer}
-textarea,input[type=text],input[type=password],input[type=search]{width:100%;border:1px solid var(--line);border-radius:12px;padding:10px 12px;font:16px/1.4 inherit;background:var(--bg);color:var(--ink)}
+select,textarea,input[type=text],input[type=password],input[type=search]{min-height:44px;width:100%;border:1px solid var(--line);border-radius:12px;padding:10px 12px;font:16px/1.4 inherit;background:var(--bg);color:var(--ink)}
 textarea{min-height:70px}
 .row{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
 .row .tbtn{flex:1}
@@ -148,6 +148,10 @@ td:first-child{font-weight:600}
  <div class="field"><b>Czytanie na głos</b>
   <label class="chk"><input type="checkbox" id="o-fx" checked> Czytaj angielski / hiszpański</label>
   <label class="chk"><input type="checkbox" id="o-pl" checked> Czytaj polski</label>
+  <label class="field" style="display:block"><b>Głos polski</b><select id="v-pl" data-l="pl"></select></label>
+  <label class="field" style="display:block"><b>Głos angielski</b><select id="v-en" data-l="en"></select></label>
+  <label class="field" style="display:block"><b>Głos hiszpański</b><select id="v-es" data-l="es"></select></label>
+  <p class="note">Ładniejsze głosy: iPhone – Ustawienia → Dostępność → Treść mówiona → Głosy, pobierz wersje „Premium” lub „Rozszerzony”. Android – Ustawienia → Zamiana tekstu na mowę → Usługi Google → zainstaluj głosy wysokiej jakości. Potem zamknij i otwórz aplikację.</p>
   <div class="row"><button class="tbtn" id="b-vtest">🔊 Test głosu</button></div>
   <p class="note" id="vmsg"></p>
   <label class="chk">Tempo mowy <input type="range" id="rate" min="0.7" max="1.2" step="0.05" style="width:160px;height:auto"></label>
@@ -189,7 +193,16 @@ function liveMsg(t,cls){const el=$("live");el.textContent=t;el.className="live"+
 
 /* ---------- speech output ---------- */
 function unlock(){try{speechSynthesis.resume();const u=new SpeechSynthesisUtterance(" ");u.volume=0.01;speechSynthesis.speak(u);unlocked=true}catch(e){}}
-function voiceFor(lang){try{const vs=speechSynthesis.getVoices(),n=v=>(v.lang||"").replace("_","-");for(const c of L[lang].tts){const v=vs.find(x=>n(x)===c);if(v)return v}return vs.find(x=>n(x).toLowerCase().startsWith(lang))||null}catch(e){return null}}
+const vlang=v=>(v.lang||"").replace("_","-");
+function vScore(v,lang){const id=(v.name+" "+v.voiceURI).toLowerCase();let sc=0;
+ if(/premium/.test(id))sc+=30;else if(/enhanced|rozszerz|ulepsz|neural|natural/.test(id))sc+=20;else if(/google|online/.test(id))sc+=10;
+ if(/compact|eloquence|novelty|bad news|bells|boing|bubbles|cellos|whisper|zarvox|trinoids|organ|superstar|jester|wobble|albert|bahh|fred|junior|ralph/.test(id))sc-=50;
+ const i=L[lang].tts.indexOf(vlang(v));sc+=i<0?0:5-i;return sc}
+function voicesFor(lang){try{return speechSynthesis.getVoices().filter(v=>vlang(v).toLowerCase().startsWith(lang)).sort((a,b)=>vScore(b,lang)-vScore(a,lang))}catch(e){return[]}}
+function voiceFor(lang){const vs=voicesFor(lang);const want=st("t-v-"+lang);return (want&&vs.find(v=>v.voiceURI===want))||vs[0]||null}
+function fillVoices(){["pl","en","es"].forEach(l=>{const sel=$("v-"+l);if(!sel)return;const cur=st("t-v-"+l)||"";sel.innerHTML="";
+ const a=document.createElement("option");a.value="";a.textContent="Automatycznie (najlepszy)";sel.append(a);
+ voicesFor(l).forEach(v=>{const o=document.createElement("option");o.value=v.voiceURI;o.textContent=v.name+" ("+vlang(v)+")";sel.append(o)});sel.value=cur;if(sel.value!==cur)sel.value=""})}
 function speak(text,lang,force){
  return new Promise(res=>{
   const want=force||(lang==="pl"?$("o-pl").checked:$("o-fx").checked);
@@ -307,7 +320,7 @@ $("b-say").addEventListener("click",()=>{unlock();if(last)speak(last.out,last.to
 $("b-reset").addEventListener("click",()=>{hist=[];st("t-hist","[]");renderHist();last=null;$("res").classList.add("empty");$("r-from").textContent="";$("r-to").textContent="Tu pojawi się tłumaczenie.";$("r-tools").classList.add("hide");$("r-tag").textContent=""});
 
 /* ---------- settings ---------- */
-function openSet(){document.querySelectorAll("input[name=eng]").forEach(r=>r.checked=r.value===eng);$("key").value=key;$("model").value=model;$("rate").value=rate;$("settings").classList.remove("hide")}
+function openSet(){fillVoices();document.querySelectorAll("input[name=eng]").forEach(r=>r.checked=r.value===eng);$("key").value=key;$("model").value=model;$("rate").value=rate;$("settings").classList.remove("hide")}
 function saveSet(){const r=document.querySelector("input[name=eng]:checked");eng=r?r.value:"free";key=$("key").value.trim();model=$("model").value.trim()||DEF_MODEL;rate=+$("rate").value||1;st("t-eng",eng);st("t-key",key);st("t-model",model);st("t-rate",rate);st("t-ofx",$("o-fx").checked?"1":"0");st("t-opl",$("o-pl").checked?"1":"0");engLabel()}
 $("b-set").addEventListener("click",openSet);
 $("b-close").addEventListener("click",()=>{saveSet();$("settings").classList.add("hide")});
@@ -317,6 +330,7 @@ $("b-test").addEventListener("click",async()=>{saveSet();const m=$("keymsg");if(
  m.textContent="Sprawdzam…";m.className="note";
  try{const o=fx;fx="en";const t=await claudeTr("pl","Dzień dobry");fx=o;m.textContent="✓ Działa! Test: „Dzień dobry” → „"+t+"”";m.className="note ok";if(eng!=="claude"){eng="claude";document.querySelector("input[value=claude]").checked=true;saveSet()}}
  catch(e){m.textContent="✗ "+e.message;m.className="note bad"}});
+["pl","en","es"].forEach(l=>$("v-"+l).addEventListener("change",e=>{st("t-v-"+l,e.target.value);unlock();speak({pl:"Dzień dobry, jak się masz?",en:"Hello, nice to meet you.",es:"Hola, mucho gusto."}[l],l,true)}));
 $("b-vtest").addEventListener("click",()=>{unlock();let n=0,ve=0,vp=0,vs=0;try{const v=speechSynthesis.getVoices();n=v.length;ve=v.filter(x=>/^en/i.test(x.lang)).length;vp=v.filter(x=>/^pl/i.test(x.lang)).length;vs=v.filter(x=>/^es/i.test(x.lang)).length}catch(e){}
  $("vmsg").textContent=window.speechSynthesis?`Głosy w telefonie: ${n} (angielskie ${ve}, polskie ${vp}, hiszpańskie ${vs}). Jeśli nic nie słychać: wyłącz tryb wyciszenia i podgłośnij.`:"Ta przeglądarka nie obsługuje czytania na głos.";
  speak("To jest test głosu.","pl",true).then(()=>speak("This is a voice test.","en",true))});
@@ -324,7 +338,7 @@ if(st("t-ofx")==="0")$("o-fx").checked=false;if(st("t-opl")==="0")$("o-pl").chec
 
 /* ---------- start ---------- */
 setFx(fx);chips();glossary();renderHist();setBtns();
-try{speechSynthesis.getVoices();speechSynthesis.onvoiceschanged=()=>{}}catch(e){}
+try{speechSynthesis.getVoices();speechSynthesis.onvoiceschanged=()=>{fillVoices()}}catch(e){}
 if(!SR)liveMsg("Rozpoznawanie mowy niedostępne w tej przeglądarce – otwórz w Chrome (Android) lub Safari (iPhone). Możesz też wpisać tekst poniżej.");
 }
 </script>
